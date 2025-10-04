@@ -30,8 +30,6 @@ User Roles & Authentication:
 
 Role-based access with distinct dashboards for Admins, Managers, and Employees.
 
-Functional Signup, Login, and Password Reset UI.
-
 Simulated user persistence using browser localStorage.
 
 Employee Dashboard (employee.html):
