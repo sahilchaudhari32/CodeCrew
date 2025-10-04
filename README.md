@@ -48,6 +48,9 @@ A detailed view for each expense, providing all necessary context for a decision
 
 Functional "Approve" and "Reject" actions that update the expense status in the UI.
 
+
+Team Members: Our hackathon project was brought to life by a dynamic and talented team. Sahil Chaudhari contributed his expertise in backend development and workflow automation. Ammar played a key role in designing the system architecture and ensuring smooth integration of modules. Priya focused on the user interface and experience, making the platform intuitive and visually appealing. Khush supported the team with testing, debugging, and documentation, ensuring the project ran seamlessly from start to finish. Together, they combined their skills to create an efficient and innovative solution for the hackathon.
+
 Admin Dashboard (admin.html):
 
 A high-level overview of system-wide metrics.
