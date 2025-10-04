@@ -1,6 +1,6 @@
 # CodeCrew
 
-ExpenseSync: Hackathon Submission
+#ExpenseSync: Hackathon Submission
 Project for: Odoo
 Challenge: Advanced Expense Management System
 Submitted By: Code Crew
