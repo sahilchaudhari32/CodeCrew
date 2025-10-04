@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpensePro - Manager Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #0F1035;
+            --card-bg: #DCF2F1;
+            --button-color: #7FC7D9;
+            --heading-accent: #365486;
+            --button-hover: #365486;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-bg), var(--button-hover));
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: var(--heading-accent);
+            color: white;
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--button-color);
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .dashboard-content {
+            padding: 30px;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--heading-accent);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .card h3 i {
+            margin-right: 10px;
+        }
+
+        .stat {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--heading-accent);
+            margin: 10px 0;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(53, 84, 134, 0.2);
+        }
+
+        .section-header h2 {
+            color: var(--heading-accent);
+            font-size: 1.5rem;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table th,
+        table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(53, 84, 134, 0.2);
+        }
+
+        table th {
+            background: rgba(127, 199, 217, 0.2);
+            color: var(--heading-accent);
+            font-weight: 600;
+        }
+
+        table tr:hover {
+            background: rgba(127, 199, 217, 0.1);
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-approved {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--success);
+        }
+
+        .status-pending {
+            background: rgba(243, 156, 18, 0.2);
+            color: var(--warning);
+        }
+
+        .conversion-note {
+            font-size: 0.8rem;
+            color: var(--heading-accent);
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-clipboard-check"></i> Manager Dashboard</h1>
+            <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=Khush+Manager&background=7FC7D9&color=0F1035"
+                    alt="Khush Manager">
+                <span>Khush (Manager)</span>
+                <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3><i class="fas fa-users"></i> My Team</h3>
+                    <div class="stat" id="team-count">1</div>
+                    <p>Employees in my team</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-file-invoice-dollar"></i> Pending Approvals</h3>
+                    <div class="stat" id="pending-approvals">1</div>
+                    <p>Expenses waiting for my approval</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-check-circle"></i> Approved This Month</h3>
+                    <div class="stat" id="approved-month">1</div>
+                    <p>Expenses I approved this month</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-money-bill-wave"></i> Team Expenses</h3>
+                    <div class="stat" id="team-expenses">₹54,896</div>
+                    <p>My team's approved expenses</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-clipboard-list"></i> Approvals to Review</h2>
+                </div>
+                <div class="card-content">
+                    <table id="approvals-table">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Approvals will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-history"></i> Approval History</h2>
+                </div>
+                <div class="card-content">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- History will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadManagerDashboard();
+
+            document.getElementById('logout-btn').addEventListener('click', function () {
+                window.location.href = 'index.html';
+            });
+        });
+
+        function loadManagerDashboard() {
+            const db = JSON.parse(localStorage.getItem('expenseSystem'));
+            const currentUser = db.users.find(u => u.email === 'khush@example.com');
+
+            // Update stats
+            const teamCount = db.users.filter(u => u.manager === currentUser.email).length;
+            document.getElementById('team-count').textContent = teamCount;
+
+            const pendingApprovals = getPendingApprovalsForManager(currentUser.email);
+            document.getElementById('pending-approvals').textContent = pendingApprovals.length;
+
+            const approvedCount = db.expenses.filter(e =>
+                e.approvedBy === currentUser.email && e.status === 'approved'
+            ).length;
+            document.getElementById('approved-month').textContent = approvedCount;
+
+            const teamExpenses = db.expenses
+                .filter(e => {
+                    const employee = db.users.find(u => u.email === e.employee);
+                    return employee && employee.manager === currentUser.email && e.status === 'approved';
+                })
+                .reduce((sum, expense) => sum + (expense.convertedAmount || expense.amount), 0);
+            document.getElementById('team-expenses').textContent = `₹${teamExpenses.toLocaleString()}`;
+
+            // Load approvals table
+            const approvalsTable = document.getElementById('approvals-table').querySelector('tbody');
+            approvalsTable.innerHTML = '';
+
+            pendingApprovals.forEach(expense => {
+                const employee = db.users.find(u => u.email === expense.employee);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${employee ? employee.name : expense.employee}</td>
+                    <td>${expense.description}</td>
+                    <td>${expense.date}</td>
+                    <td>
+                        ₹${(expense.convertedAmount || expense.amount).toLocaleString()}
+                        ${expense.currency !== 'INR' ? `<div class="conversion-note">${expense.amount} ${expense.currency} → INR</div>` : ''}
+                    </td>
+                    <td>
+                        <button class="btn btn-success btn-sm" onclick="approveExpense(${expense.id})">
+                            <i class="fas fa-check"></i> Approve
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="rejectExpense(${expense.id})">
+                            <i class="fas fa-times"></i> Reject
+                        </button>
+                    </td>
+                `;
+                approvalsTable.appendChild(row);
+            });
+
+            // Load history table
+            const historyTable = document.getElementById('history-table').querySelector('tbody');
+            historyTable.innerHTML = '';
+
+            const myApprovals = db.expenses.filter(e => e.approvedBy === currentUser.email);
+            myApprovals.forEach(expense => {
+                const employee = db.users.find(u => u.email === expense.employee);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${employee ? employee.name : expense.employee}</td>
+                    <td>${expense.description}</td>
+                    <td>${expense.date}</td>
+                    <td>₹${(expense.convertedAmount || expense.amount).toLocaleString()}</td>
+                    <td><span class="status-badge status-${expense.status}">${expense.status}</span></td>
+                `;
+                historyTable.appendChild(row);
+            });
+        }
+
+        function getPendingApprovalsForManager(managerEmail) {
+            const db = JSON.parse(localStorage.getItem('expenseSystem'));
+            const teamMembers = db.users.filter(user => user.manager === managerEmail);
+            const teamEmails = teamMembers.map(member => member.email);
+
+            return db.expenses.filter(expense =>
+                teamEmails.includes(expense.employee) && expense.status === "pending"
+            );
+        }
+
+        function approveExpense(expenseId) {
+            const db = JSON.parse(localStorage.getItem('expenseSystem'));
+            const expense = db.expenses.find(exp => exp.id === expenseId);
+            if (expense) {
+                expense.status = 'approved';
+                expense.approvedBy = 'khush@example.com';
+                expense.approvedDate = new Date().toISOString().split('T')[0];
+                localStorage.setItem('expenseSystem', JSON.stringify(db));
+                alert('Expense approved successfully!');
+                loadManagerDashboard();
+            }
+        }
+
+        function rejectExpense(expenseId) {
+            const db = JSON.parse(localStorage.getItem('expenseSystem'));
+            const expense = db.expenses.find(exp => exp.id === expenseId);
+            if (expense) {
+                expense.status = 'rejected';
+                expense.approvedBy = 'khush@example.com';
+                expense.approvedDate = new Date().toISOString().split('T')[0];
+                localStorage.setItem('expenseSystem', JSON.stringify(db));
+                alert('Expense rejected successfully!');
+                loadManagerDashboard();
+            }
+        }
+    </script>
+</body>
+
+</html>
